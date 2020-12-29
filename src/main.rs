@@ -5,39 +5,12 @@ extern crate reqwest;
 
 use prettytable::format;
 use prettytable::Table;
-use serde::Deserialize;
 use std::env;
 use std::fs::File;
 
-#[derive(Debug, Deserialize)]
-struct RKIDataSet {
-    #[serde(rename = "Datum")]
-    date: String,
-    #[serde(rename = "Schätzer_Neuerkrankungen")]
-    new_cases: u32,
-    #[serde(rename = "UG_PI_Neuerkrankungen")]
-    new_cases_lower: u32,
-    #[serde(rename = "OG_PI_Neuerkrankungen")]
-    new_cases_upper: u32,
-    #[serde(rename = "Schätzer_Neuerkrankungen_ma4")]
-    new_cases_average: u32,
-    #[serde(rename = "UG_PI_Neuerkrankungen_ma4")]
-    new_cases_average_lower: u32,
-    #[serde(rename = "OG_PI_Neuerkrankungen_ma4")]
-    new_cases_average_upper: u32,
-    #[serde(rename = "Schätzer_Reproduktionszahl_R")]
-    r_value: f32,
-    #[serde(rename = "UG_PI_Reproduktionszahl_R")]
-    r_value_lower: f32,
-    #[serde(rename = "OG_PI_Reproduktionszahl_R")]
-    r_value_upper: f32,
-    #[serde(rename = "Schätzer_7_Tage_R_Wert")]
-    r_value_average: f32,
-    #[serde(rename = "UG_PI_7_Tage_R_Wert")]
-    r_value_average_lower: f32,
-    #[serde(rename = "OG_PI_7_Tage_R_Wert")]
-    r_value_average_upper: f32,
-}
+mod rki_data;
+
+type RKIDataSet = rki_data::Nowcasting;
 
 /// Return a PathBuf to a csv file in the temp directory determined by the OS
 fn get_file_path() -> std::path::PathBuf {
